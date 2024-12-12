@@ -18,8 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->group(callback: static function () {
-    Route::get(uri: 'cars', action: [CarController::class, 'index'])->name(name: 'cars.index');
-    Route::get(uri: 'cars/{car}', action: [CarController::class, 'show'])->name(name: 'cars.show');
+    Route::prefix('cars')->group(callback: static function () {
+        Route::get(uri: '/', action: [CarController::class, 'index'])->name(name: 'cars.index');
+        Route::get(uri: '/{car}', action: [CarController::class, 'show'])->name(name: 'cars.show');
+    });
     Route::get(uri: 'credit/calculate', action: [CreditController::class, 'calculate'])->name(name: 'credit.calculate');
     Route::post(uri: 'request', action: [CreditController::class, 'save'])->name(name: 'credit.save');
 });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers\Credits;
 
+use App\Data\Credits\CreditRequestData;
 use App\Exceptions\Cars\CarNotFoundException;
 use App\Exceptions\Credits\CreditProgramNotFoundException;
 use App\Models\Cars\Car;
@@ -15,17 +16,16 @@ final readonly class CreditHelper
     /**
      * @description Check if credit program and car exists
      *
-     * @param array $data
-     *
+     * @param CreditRequestData $creditRequestData
      * @return void
      *
-     * @throws CreditProgramNotFoundException
      * @throws CarNotFoundException
+     * @throws CreditProgramNotFoundException
      */
-    public static function checkEntities(array $data): void
+    public static function checkEntities(CreditRequestData $creditRequestData): void
     {
-        self::checkProgram(programId: (int)$data['programId']);
-        self::checkCar(carId: (int)$data['carId']);
+        self::checkProgram(programId: $creditRequestData->programId);
+        self::checkCar(carId: $creditRequestData->carId);
     }
 
     /**

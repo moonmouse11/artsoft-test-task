@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\Credits;
 
+use App\Data\Credits\CreditCalculateData;
+use App\Data\Credits\CreditRequestData;
 use App\Helpers\Credits\CalculateCreditHelper;
 use App\Repositories\Credits\CreditRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
-use Random\RandomException;
 
 final readonly class CreditService
 {
@@ -17,12 +18,9 @@ final readonly class CreditService
     ) {
     }
 
-    /**
-     * @throws RandomException
-     */
-    public function calculateCredit(array $creditData): array
+    public function calculateCredit(CreditCalculateData $creditCalculateData): array
     {
-        $creditProgram = CalculateCreditHelper::getCreditProgram(creditData: $creditData);
+        $creditProgram = $this->getCreditProgram(creditCalculateData: $creditCalculateData);
 
         return [
             'programId' => $creditProgram->id,
@@ -35,13 +33,15 @@ final readonly class CreditService
     /**
      * @throws ValidatorException
      */
-    public function saveRequest(array $data): bool
+    public function saveRequest(CreditRequestData $creditRequestData): bool
     {
-        return (bool)$this->creditRepository->create([
-            'program_id' => $data['programId'],
-            'car_id' => $data['carId'],
-            'initial_payment' => $data['initialPayment'],
-            'loan_term' => $data['loanTerm']
-        ]);
+        return (bool)$this->creditRepository->create(
+            $creditRequestData->toArray()
+        );
+    }
+
+    private function getCreditProgram(CreditCalculateData $creditCalculateData): Program
+    {
+        dd($creditCalculateData->toArray());
     }
 }

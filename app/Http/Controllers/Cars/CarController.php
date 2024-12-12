@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cars\Car;
 use App\Services\Cars\CarService;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class CarController extends Controller
 {
@@ -29,11 +30,20 @@ final class CarController extends Controller
 
     public function show(Car $car): JsonResponse
     {
-        return new JsonResponse(
-            data: [
-                'answer' => $this->service->getCar(car: $car)
-            ],
-            status: 200
-        );
+        try {
+            return new JsonResponse(
+                data: [
+                    'answer' => $this->service->getCar(car: $car)
+                ],
+                status: 200
+            );
+        }catch (NotFoundHttpException $exception) {
+            return new JsonResponse(
+                data: [
+                    'error' => $exception->getMessage()
+                ],
+                status: 404
+            );
+        }
     }
 }

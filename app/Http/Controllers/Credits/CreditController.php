@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Credits;
 
+use App\Data\Credits\CreditCalculateData;
+use App\Data\Credits\CreditRequestData;
 use App\Exceptions\Cars\CarNotFoundException;
 use App\Exceptions\Credits\CreditProgramNotFoundException;
 use App\Helpers\Credits\CreditHelper;
@@ -12,6 +14,7 @@ use App\Http\Requests\Credits\CalculateRequest;
 use App\Http\Requests\Credits\CreditSaveRequest;
 use App\Services\Credits\CreditService;
 use Illuminate\Http\JsonResponse;
+use Prettus\Validator\Exceptions\ValidatorException;
 
 final class CreditController extends Controller
 {
@@ -24,11 +27,10 @@ final class CreditController extends Controller
     {
         $calculateRequest->validated();
 
-        $this->service->calculateCredit(creditData: $calculateRequest->toArray());
-
         return new JsonResponse(
             data: [
-                'answer' => $this->service->calculateCredit(creditData: $calculateRequest->toArray())
+                'answer' => $this->service->calculateCredit(
+                    creditCalculateData: CreditCalculateData::from($calculateRequest->toArray()))
             ],
             status: 200
         );
@@ -39,15 +41,17 @@ final class CreditController extends Controller
         try {
             $creditSaveRequest->validated();
 
-            CreditHelper::checkEntities(data: $creditSaveRequest->toArray());
+            $creditRequestData = CreditRequestData::from($creditSaveRequest->toArray());
+
+            CreditHelper::checkEntities(creditRequestData: $creditRequestData);
 
             return new JsonResponse(
                 data: [
-                    'success' => $this->service->saveRequest(data: $creditSaveRequest->toArray())
+                    'success' => $this->service->saveRequest(creditRequestData: $creditRequestData)
                 ],
                 status: 200
             );
-        } catch (CarNotFoundException|CreditProgramNotFoundException $exception) {
+        } catch (CarNotFoundException|CreditProgramNotFoundException|ValidatorException $exception) {
             return new JsonResponse(
                 data: [
                     'message' => $exception->getMessage()

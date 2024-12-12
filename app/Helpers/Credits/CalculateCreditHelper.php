@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers\Credits;
 
+use App\Data\Credits\CreditCalculateData;
 use App\Models\Credits\Program;
 use Random\RandomException;
 
@@ -24,26 +25,6 @@ final readonly class CalculateCreditHelper
         }
 
         return (int)(($creditData['price'] - $creditData['initialPayment']) / $creditData['loanTerm']);
-    }
-
-    /**
-     * @description Get credit program
-     *
-     * @param array $creditData
-     *
-     * @return Program
-     *
-     * @throws RandomException
-     */
-    public static function getCreditProgram(array $creditData): Program
-    {
-        if (self::checkBestProgram(creditData: $creditData)) {
-            return Program::where(column: 'title', operator: '=', value: 'Default')->firstOrFail();
-        }
-
-        $programs = Program::whereNot(column: 'title', operator: '=', value: 'Default');
-
-        return $programs->get()[random_int(min: 0, max: $programs->count() - 1)];
     }
 
     /**
