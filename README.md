@@ -1,7 +1,7 @@
 # Test task for Artsoft
 ***
 ## Description
-Разработано api по задания для Artsoft. 
+Разработано api по тестовому заданию для Artsoft. 
 ***
 ## Stack
 
@@ -22,7 +22,7 @@
  - `make stop` - останавливает контейнеры
 ***
 ## Endpoints
-  - `http://localhost/api/v1/cars` GET|HEAD - список автомобилей
-  - `http://localhost/api/v1/cars/{car}` GET|HEAD - автомобиль
-  - `http://localhost/api/v1/credit/calculate` GET|HEAD - расчет кредита
-  - `http://localhost/api/v1/request` POST - сохранение кредитной заявки 
+  - `http://0.0.0.0/api/v1/cars` GET|HEAD - список автомобилей
+  - `http://0.0.0.0/api/v1/cars/{car}` GET|HEAD - автомобиль
+  - `http://0.0.0.0/api/v1/credit/calculate` GET|HEAD - расчет кредита
+  - `http://0.0.0.0/api/v1/request` POST - сохранение кредитной заявки 
