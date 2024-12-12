@@ -1,8 +1,11 @@
 # Test task for Artsoft
 ***
+## Description
+Разработано api по задания для Artsoft. 
+***
 ## Stack
 
-1. [Laravel 11.0.0](https://laravel.com/). 
+1. [Laravel 11.31](https://laravel.com/). 
 2. [MySQL 8.0](https://dev.mysql.com/doc/).
 ***
 ## Requirements
@@ -18,7 +21,7 @@
  - `make start` - запускает контейнеры (если они не запущены)
  - `make stop` - останавливает контейнеры
 ***
-## Routes
+## Endpoints
   - `http://localhost/api/v1/cars` GET|HEAD - список автомобилей
   - `http://localhost/api/v1/cars/{car}` GET|HEAD - автомобиль
   - `http://localhost/api/v1/credit/calculate` GET|HEAD - расчет кредита
