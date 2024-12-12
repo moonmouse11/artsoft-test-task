@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->id();
             $table->string(column: 'title')->nullable(value: false);
             $table->double(column: 'interest_rate')->nullable(value: false);
+            $table->json(column: 'rule')->nullable(value: true);
+            $table->integer(column: 'monthly_payment')->nullable(value: true);
             $table->softDeletes();
         });
 

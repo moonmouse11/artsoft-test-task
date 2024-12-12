@@ -13,7 +13,12 @@ final class Program extends Model
     use SoftDeletes;
 
     protected $guarded = ['id'];
-    protected $fillable = ['title', 'interest_rate'];
+    protected $fillable = [
+        'title',
+        'interest_rate',
+        'rule',
+        'monthly_payment'
+    ];
     public $timestamps = false;
 
     public function credits(): HasMany

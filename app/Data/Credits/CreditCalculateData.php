@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Data\Credits;
 
+use Spatie\LaravelData\Attributes\Computed;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\MapOutputName;
@@ -24,4 +25,18 @@ final class CreditCalculateData extends Data
     #[MapInputName('loanTerm')]
     #[MapOutputName('loan_term')]
     public int $loanTerm;
+
+    #[Computed]
+    public int $monthlyPayment;
+
+    public function __construct(
+        int $price,
+        float $initialPayment,
+        int $loanTerm,
+    ) {
+        $this->price = $price;
+        $this->initialPayment = $initialPayment;
+        $this->loanTerm = $loanTerm;
+        $this->monthlyPayment = (int)(($price - $initialPayment) / $loanTerm);
+    }
 }

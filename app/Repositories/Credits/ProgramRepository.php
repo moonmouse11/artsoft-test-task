@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Repositories\Credits;
 
-use App\Models\Credits\Credit;
+use App\Models\Credits\Program;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-final class CreditRepository extends BaseRepository
+final class ProgramRepository extends BaseRepository
 {
     public function model(): string
     {
-        return Credit::class;
+        return Program::class;
     }
 }

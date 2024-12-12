@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Credits;
 use App\Data\Credits\CreditCalculateData;
 use App\Data\Credits\CreditRequestData;
 use App\Exceptions\Cars\CarNotFoundException;
+use App\Exceptions\Credits\CreditProgramNotAcceptedException;
 use App\Exceptions\Credits\CreditProgramNotFoundException;
 use App\Helpers\Credits\CreditHelper;
 use App\Http\Controllers\Controller;
@@ -15,6 +16,7 @@ use App\Http\Requests\Credits\CreditSaveRequest;
 use App\Services\Credits\CreditService;
 use Illuminate\Http\JsonResponse;
 use Prettus\Validator\Exceptions\ValidatorException;
+use Random\RandomException;
 
 final class CreditController extends Controller
 {
@@ -27,13 +29,23 @@ final class CreditController extends Controller
     {
         $calculateRequest->validated();
 
-        return new JsonResponse(
-            data: [
-                'answer' => $this->service->calculateCredit(
-                    creditCalculateData: CreditCalculateData::from($calculateRequest->toArray()))
-            ],
-            status: 200
-        );
+        try {
+            return new JsonResponse(
+                data: [
+                    'answer' => $this->service->calculateCredit(
+                        creditCalculateData: CreditCalculateData::from($calculateRequest->toArray())
+                    )
+                ],
+                status: 200
+            );
+        } catch (CreditProgramNotAcceptedException $exception) {
+            return new JsonResponse(
+                data: [
+                    'message' => $exception->getMessage()
+                ],
+                status: 422
+            );
+        }
     }
 
     public function save(CreditSaveRequest $creditSaveRequest): JsonResponse
@@ -43,6 +55,7 @@ final class CreditController extends Controller
 
             $creditRequestData = CreditRequestData::from($creditSaveRequest->toArray());
 
+            // Replace to DTO
             CreditHelper::checkEntities(creditRequestData: $creditRequestData);
 
             return new JsonResponse(

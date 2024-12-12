@@ -26,7 +26,7 @@ return new class extends Migration {
 
         Schema::create(table: 'cars', callback: static function (Blueprint $table) {
             $table->id();
-            $table->string(column: 'photo', length: 255)->nullable(value: true);
+            $table->string(column: 'photo', length: 255);
             $table->foreignId(column: 'brand_id')->references(column: 'id')->on(table: 'brands')->restrictOnDelete();
             $table->foreignId(column: 'model_id')->references(column: 'id')->on(table: 'models')->restrictOnDelete();
             $table->integer(column: 'price')->nullable(value: false);
